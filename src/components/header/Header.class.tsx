@@ -5,8 +5,21 @@ import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "../../helpers/withRouter";
+import store from "../../redux/store";
+import { LanguageState } from "../../redux/languageReducer";
 
-class HeaderComponent extends React.Component<RouteComponentProps> {
+interface State extends LanguageState {}
+
+class HeaderComponent extends React.Component<RouteComponentProps, State> {
+  constructor(props){
+    super(props);
+    const storeState = store.getState();
+    this.state = {
+      language: storeState.language,
+      languageList: storeState.languageList,
+    };
+  }
+
   render(): React.ReactNode {
     const { navigate } = this.props
     return (
@@ -18,15 +31,14 @@ class HeaderComponent extends React.Component<RouteComponentProps> {
               style={{ marginLeft: 15, display: 'inline-flex', width: 'initial' }}
               overlay={
                 <Menu
-                  items={[
-                    { key: "1", label: "中文" },
-                    { key: "2", label: "English" },
-                  ]}
+                  items={this.state.languageList.map((l) => {
+                    return { key: l.code, label: l.name };
+                  })}
                 />
               }
               icon={<GlobalOutlined />}
             >
-              语言
+              {this.state.language === "zh" ? "中文" : "English"}
             </Dropdown.Button>
             <Button.Group className={styles["button-group"]}>
               <Button onClick={() => navigate("/register")}>注册</Button>
