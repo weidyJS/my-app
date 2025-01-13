@@ -11,25 +11,43 @@ import { LanguageState } from "../../redux/languageReducer";
 interface State extends LanguageState {}
 
 class HeaderComponent extends React.Component<RouteComponentProps, State> {
-  constructor(props){
+  constructor(props) {
     super(props);
     const storeState = store.getState();
     this.state = {
       language: storeState.language,
       languageList: storeState.languageList,
     };
+    store.subscribe(this.handleStoreChange);
   }
 
+  handleStoreChange = () => {
+    const storeState = store.getState();
+    this.setState({
+      language: storeState.language,
+      languageList: storeState.languageList,
+    });
+  };
+
   menuClickHandler = (e) => {
-    const action = {
-      type: "change_language",
-      payload: e.key,
-    };
-    store.dispatch(action);
+    console.log(e);
+    if (e.key === "new") {
+      const action = {
+        type: "add_language",
+        payload: { code: "new_lang", name: "新语言" },
+      };
+      store.dispatch(action);
+    } else {
+      const action = {
+        type: "change_language",
+        payload: e.key,
+      };
+      store.dispatch(action);
+    }
   };
 
   render(): React.ReactNode {
-    const { navigate } = this.props
+    const { navigate } = this.props;
     return (
       <div className={styles["app-header"]}>
         <div className={styles["top-header"]}>
@@ -40,9 +58,12 @@ class HeaderComponent extends React.Component<RouteComponentProps, State> {
               overlay={
                 <Menu
                   onClick={this.menuClickHandler}
-                  items={this.state.languageList.map((l) => {
-                    return { key: l.code, label: l.name };
-                  })}
+                  items={[
+                    ...this.state.languageList.map((l) => {
+                      return { key: l.code, label: l.name };
+                    }),
+                    { key: "new", label: "添加新语言" },
+                  ]}
                 />
               }
               icon={<GlobalOutlined />}
