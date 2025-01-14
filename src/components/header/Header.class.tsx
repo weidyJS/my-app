@@ -18,8 +18,8 @@ import { RootState } from "../../redux/store";
 
 const mapStateToProps = (state: RootState) => {
   return {
-    language: state.language,
-    languageList: state.languageList,
+    language: state.language.language,
+    languageList: state.language.languageList,
   };
 };
 
