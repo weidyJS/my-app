@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
-  Header, 
-  Footer, 
-  Carousel, 
-  SideMenu, 
-  ProductCollection, 
+import {
+  Header,
+  Footer,
+  Carousel,
+  SideMenu,
+  ProductCollection,
   BusinessPartners,
 } from "../../components";
 import { Row, Col, Typography, Spin } from "antd";
