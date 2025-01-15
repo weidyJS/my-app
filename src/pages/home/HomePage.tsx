@@ -17,29 +17,22 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
-  fetchRecommendProductStartActionCreator,
-  fetchRecommendProductSuccessActionCreator,
-  fetchRecommendProductFailActionCreator,
+giveMeDataActionCreator
 } from "../../redux/recommendProducts/recommendProductsActions";
 
 const mapStateToProps = (state: RootState) => {
   return {
     loading: state.recommendProducts.loading,
     error: state.recommendProducts.error,
-    productList: state.recommendProducts.productList,
-  };
+    productList: state.recommendProducts.productList
+  }
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchStart: () => {
-      dispatch(fetchRecommendProductStartActionCreator());
-    },
-    fetchSuccess: (data) => {
-      dispatch(fetchRecommendProductSuccessActionCreator(data));
-    },
-    fetchFail: (error) => {
-      dispatch(fetchRecommendProductFailActionCreator(error));
-    },
+    giveMeData: () => {
+      dispatch(giveMeDataActionCreator());
+    }
   };
 };
 
@@ -48,25 +41,9 @@ type PropsType = WithTranslation &
   ReturnType<typeof mapDispatchToProps>;
 
 class HomePageComponent extends React.Component<PropsType> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      error: null,
-      productList: [],
-    };
-  }
 
-  async componentDidMount() {
-    this.props.fetchStart();
-    try {
-      const { data } = await axios.get(
-        "http://82.157.43.234:8080/api/productCollections"
-      );
-      this.props.fetchSuccess(data);
-    } catch (error) {
-      this.props.fetchFail(error instanceof Error ? error.message : "error");
-    }
+  componentDidMount() {
+    this.props.giveMeData();
   }
   render(): React.ReactNode {
     const { t } = this.props;
