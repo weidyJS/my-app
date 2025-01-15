@@ -11,4 +11,4 @@ export const Footer: React.FC = () => {
       </Typography.Title>
     </Layout.Footer>
   );
-}
+};
