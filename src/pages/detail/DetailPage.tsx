@@ -13,7 +13,6 @@ import { DatePicker, Space } from "antd";
 import { commentMockData } from "./mockup";
 import { productDetailSlice, getProductDetail } from "../../redux/productDetail/slice";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
-import { useDispatch } from "react-redux";
 
 const { RangePicker } = DatePicker;
 
